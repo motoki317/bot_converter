@@ -11,8 +11,8 @@ require (
 	github.com/labstack/echo/v4 v4.11.2
 	github.com/motoki317/sc v1.6.0
 	github.com/samber/lo v1.38.1
-	github.com/sapphi-red/go-traq v0.0.0-20220321193749-04187944427c
 	github.com/spf13/viper v1.17.0
+	github.com/traPtitech/go-traq v0.0.0-20230404114110-499acf77d487
 	github.com/traPtitech/traq-ws-bot v1.1.2
 	golang.org/x/text v0.13.0
 	gorm.io/driver/mysql v1.5.2
@@ -40,7 +40,6 @@ require (
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/traPtitech/go-traq v0.0.0-20230404114110-499acf77d487 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
