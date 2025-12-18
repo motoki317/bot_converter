@@ -12,7 +12,11 @@ import (
 	"git.trap.jp/toki/bot_converter/utils"
 )
 
-var titleCaser = cases.Title(language.English)
+// toTitle converts a string to title case using golang.org/x/text/cases.
+// Creates a new Caser for each call to ensure thread safety.
+func toTitle(s string) string {
+	return cases.Title(language.English).String(s)
+}
 
 func (c *converter) checkRunHandler(payload github.CheckRunPayload) (string, error) {
 	if payload.Action != "completed" {
@@ -105,7 +109,7 @@ func (c *converter) issuesHandler(payload github.IssuesPayload) (string, error) 
 			icon,
 			payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 			issueName,
-			titleCaser.String(payload.Action),
+			toTitle(payload.Action),
 			payload.Assignee.Login,
 			payload.Sender.Login))
 	default:
@@ -114,7 +118,7 @@ func (c *converter) issuesHandler(payload github.IssuesPayload) (string, error) 
 			icon,
 			payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 			issueName,
-			titleCaser.String(payload.Action),
+			toTitle(payload.Action),
 			payload.Sender.Login))
 	}
 
@@ -167,7 +171,7 @@ func (c *converter) issueCommentHandler(payload github.IssueCommentPayload) (str
 		icon,
 		payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 		rmOGP(payload.Comment.HTMLURL),
-		titleCaser.String(payload.Action),
+		toTitle(payload.Action),
 		payload.Sender.Login,
 		issueName))
 
@@ -261,7 +265,7 @@ func (c *converter) releaseHandler(payload github.ReleasePayload) (string, error
 		"### :%s: [[%s](%s)] %s%s %s by %s\n",
 		icons.Tag,
 		payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
-		releaseType, releaseName, titleCaser.String(payload.Action),
+		releaseType, releaseName, toTitle(payload.Action),
 		payload.Release.Author.Login))
 
 	m.WriteString(fmt.Sprintf("Tag: %s\n", payload.Release.TagName))
@@ -342,7 +346,7 @@ func (c *converter) pullRequestHandler(payload github.PullRequestPayload) (strin
 			icon,
 			payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 			prName,
-			titleCaser.String(action),
+			toTitle(action),
 			payload.Assignee.Login,
 			payload.Sender.Login))
 	case "review_requested":
@@ -351,7 +355,7 @@ func (c *converter) pullRequestHandler(payload github.PullRequestPayload) (strin
 			icon,
 			payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 			prName,
-			titleCaser.String(action),
+			toTitle(action),
 			payload.RequestedReviewer.Login,
 			payload.Sender.Login))
 	default:
@@ -360,7 +364,7 @@ func (c *converter) pullRequestHandler(payload github.PullRequestPayload) (strin
 			icon,
 			payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 			prName,
-			titleCaser.String(action),
+			toTitle(action),
 			payload.Sender.Login))
 	}
 
@@ -421,7 +425,7 @@ func (c *converter) pullRequestReviewHandler(payload github.PullRequestReviewPay
 		icon,
 		payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 		prName,
-		titleCaser.String(action),
+		toTitle(action),
 		payload.Sender.Login))
 
 	if assignees := getAssigneeNames(payload); assignees != "" {
@@ -471,7 +475,7 @@ func (c *converter) pullRequestReviewCommentHandler(payload github.PullRequestRe
 		icon,
 		payload.Repository.Name, rmOGP(payload.Repository.HTMLURL),
 		rmOGP(payload.Comment.HTMLURL),
-		titleCaser.String(payload.Action),
+		toTitle(payload.Action),
 		payload.Sender.Login,
 		prName))
 
